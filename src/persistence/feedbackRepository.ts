@@ -12,6 +12,6 @@ export class FeedbackRepository implements IFeedbackRepository {
     request: { feedbackCreate: FeedbackCreate },
     tx: IBaseProtocol<unknown> = database
   ): Promise<void> => {
-    await tx.none(sqlFiles.createFeedback, request);
+    await tx.none(sqlFiles.createFeedback, request.feedbackCreate);
   };
 }
