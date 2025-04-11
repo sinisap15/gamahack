@@ -7,3 +7,5 @@ WHERE gl." gameId" NOT IN (
 )
 GROUP BY gl." gameId", gd.gamename
 ORDER BY score desc
+LIMIT ${pageSize};
+

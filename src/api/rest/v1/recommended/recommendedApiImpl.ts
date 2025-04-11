@@ -13,13 +13,13 @@ export class RecommendedApiImpl implements RecommendedApi {
     return this.recommendedService.getRecommendedGames(pageSize);
   };
 
-  getUserRecommendedGames(
+  getUserRecommendedGames = async (
     _: ApiRequestContext,
     request: {
       playerId: string;
       pageSize?: number;
     }
-  ): Promise<RecommendedResponseList> {
+  ): Promise<RecommendedResponseList> => {
     return this.recommendedService.getUserRecommendedGames(request);
-  }
+  };
 }
