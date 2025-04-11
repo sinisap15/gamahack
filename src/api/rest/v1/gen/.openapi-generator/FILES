@@ -1,0 +1,10 @@
+.openapi-generator-ignore
+apis/FeedbackApi.ts
+apis/RecommendedApi.ts
+apis/index.ts
+index.ts
+models/FeedbackCreate.ts
+models/RecommendedResponse.ts
+models/RecommendedResponseList.ts
+models/index.ts
+runtime.ts

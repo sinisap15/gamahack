@@ -1,0 +1,220 @@
+openapi: 3.0.3
+x-api-name: RecommendationService
+info:
+  title: Gamanza REST recommendation engine API specification
+  contact:
+    name: Gamanza
+    url: 'https://gamanza.com'
+    email: info@gamanza.com
+  version: 1.0.0
+servers:
+  - description: Custom host (this instance)
+    url: 'https://{host}/recommendation/api/v1'
+    variables:
+      host:
+        default: localhost
+        description: Custom host
+paths:
+  /recommendation/api/v1/feedback:
+    post:
+      tags:
+        - feedback
+      summary: Create new recommendation feedback object
+      description: Creates new recommendation feedback object with respected data in body payload.
+      operationId: createFeedback
+      security: []
+      parameters:
+        - name: X-Request-Id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: de13baa5-424a-49d9-8cfa-1162f370000f
+          description: Request Identifier. Random UUID generated per client request. Should be the same value for retries.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: FeedbackCreate
+              type: object
+              properties:
+                gameId:
+                  type: integer
+                  format: int32
+                gameName:
+                  type: string
+                gameCategory:
+                  type: string
+                  enum:
+                    - SLOTS
+                    - DICE_GAMES
+                    - BLACKJACK
+                    - ROULETTE
+                    - BACCARAT
+                    - POKER
+                    - OTHER
+                playerId:
+                  type: string
+                  format: uuid
+                feedbackType:
+                  type: string
+                  enum:
+                    - GameStarted
+                    - GameRated
+                    - GamePlayed
+                    - GameLiked
+              required:
+                - gameId
+                - gameName
+                - gameCategory
+                - playerId
+                - feedbackType
+        required: true
+      responses:
+        '201':
+          description: Success
+  /recommendation/api/v1/recommended:
+    get:
+      tags:
+        - recommended
+      summary: Get globally / public recommended objects
+      description: Returns globally recommended objects.
+      operationId: getRecommendedGames
+      security: []
+      parameters:
+        - name: X-Request-Id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: de13baa5-424a-49d9-8cfa-1162f370000f
+          description: Request Identifier. Random UUID generated per client request. Should be the same value for retries.
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of returned result set
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: RecommendedResponseList
+                type: object
+                properties:
+                  values:
+                    type: array
+                    items:
+                      title: RecommendedResponse
+                      type: object
+                      properties:
+                        gameId:
+                          type: integer
+                          format: int32
+                        gameName:
+                          type: string
+                        score:
+                          type: number
+                      required:
+                        - gameId
+                        - gameName
+                required:
+                  - values
+  '/recommendation/api/v1/recommended/{playerId}':
+    get:
+      tags:
+        - recommended
+      summary: Get recommended objects
+      description: Returns recommended objects.
+      operationId: getUserRecommendedGames
+      security: []
+      parameters:
+        - name: X-Request-Id
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: de13baa5-424a-49d9-8cfa-1162f370000f
+          description: Request Identifier. Random UUID generated per client request. Should be the same value for retries.
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+          description: Limit the number of returned result set
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                title: RecommendedResponseList
+                type: object
+                properties:
+                  values:
+                    type: array
+                    items:
+                      title: RecommendedResponse
+                      type: object
+                      properties:
+                        gameId:
+                          type: integer
+                          format: int32
+                        gameName:
+                          type: string
+                        score:
+                          type: number
+                      required:
+                        - gameId
+                        - gameName
+                required:
+                  - values
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      schema:
+        type: integer
+      description: 'The page number to fetch from the result set, starting with 1.'
+    pageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+      description: Limit the number of returned result set
+    filter:
+      name: filter
+      in: query
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+          pattern: '^[a-z][a-zA-Z0-9]*(\.[a-z][a-zA-Z0-9]*)*:(EQ|EQIC|NEQ|NEQIC|LIKE|LIKEIC|NLIKE|NLIKEIC|GT|GTE|LT|LTE|IN|NIN|ISNULL|ISNOTNULL)(:.+)?$'
+          minLength: 5
+          example: 'email:LIKE:%a%'
+      example: 'email:LIKE:%a%,name:EQ:abc'
+      description: Array of sort fields and the direction of the sort
+    order:
+      name: order
+      in: query
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+          pattern: '^[a-z][a-zA-Z0-9]*(\.[a-z][a-zA-Z0-9]*)* (asc|ASC|desc|DESC)$'
+          minLength: 5
+          example: email asc
+      example: 'email asc,name desc'
+      description: Array of sort fields and the direction of the sort
