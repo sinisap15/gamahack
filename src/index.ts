@@ -4,6 +4,7 @@ import { config } from "./config";
 import { registerRecommendationServiceRestApiMiddleware } from "./api/rest/v1/gen";
 import { RecommendedApiImpl } from "./api/rest/v1/recommended/recommendedApiImpl";
 import { startServices } from "./server/components";
+import { FeedbackApiImpl } from "./api/rest/v1/feedback/feedbackApiImpl";
 
 (async () => {
   const services = startServices();
@@ -20,7 +21,7 @@ import { startServices } from "./server/components";
   registerRecommendationServiceRestApiMiddleware(
     app,
     {
-      implFeedbackApi: null,
+      implFeedbackApi: new FeedbackApiImpl(services.feedbackService),
       implRecommendedApi: new RecommendedApiImpl(services.recommendedService),
     },
     {

@@ -2,7 +2,8 @@ import { IQueryFileOptions, QueryFile } from "pg-promise";
 
 export const sqlFiles = {
   getRecommendedGames: sql("getRecommendedGames.sql"),
-  getUserRecommendedGames: sql("getUserRecommendedGames.sql"),
+  getUserRecommendedGames: sql("getRecommendedGamesByPlayer.sql"),
+  createFeedback: sql("createFeedback.sql"),
 };
 
 function sql(file: string): QueryFile {
