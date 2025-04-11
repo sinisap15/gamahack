@@ -3,6 +3,8 @@ import { IRecommendedRepository } from "../../persistence/recommendedRepository"
 
 export interface IRecommendedService {
   getRecommendedGames(pageSize: number): Promise<RecommendedResponseList>;
+
+  getUserRecommendedGames(request: { playerId: string; pageSize?: number }): Promise<RecommendedResponseList>;
 }
 
 export class RecommendedService implements IRecommendedService {
@@ -10,5 +12,9 @@ export class RecommendedService implements IRecommendedService {
 
   async getRecommendedGames(pageSize: number): Promise<RecommendedResponseList> {
     return await this.recommendedRepository.getRecommendedGames(pageSize);
+  }
+
+  async getUserRecommendedGames(request: { playerId: string; pageSize?: number }): Promise<RecommendedResponseList> {
+    return this.recommendedRepository.getUserRecommendedGames(request);
   }
 }

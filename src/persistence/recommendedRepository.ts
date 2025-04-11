@@ -5,6 +5,8 @@ import { sqlFiles } from "./index";
 
 export interface IRecommendedRepository {
   getRecommendedGames(pageSize: number): Promise<RecommendedResponseList>;
+
+  getUserRecommendedGames(request: { playerId: string; pageSize?: number }): Promise<RecommendedResponseList>;
 }
 
 export class RecommendedRepository implements IRecommendedRepository {
@@ -13,6 +15,17 @@ export class RecommendedRepository implements IRecommendedRepository {
     tx: IBaseProtocol<unknown> = database
   ): Promise<RecommendedResponseList> => {
     const result = await tx.manyOrNone<RecommendedResponse>(sqlFiles.getRecommendedGames, { pageSize });
+
+    return {
+      values: result,
+    };
+  };
+
+  getUserRecommendedGames = async (
+    request: { playerId: string; pageSize?: number },
+    tx: IBaseProtocol<unknown> = database
+  ): Promise<RecommendedResponseList> => {
+    const result = await tx.manyOrNone<RecommendedResponse>(sqlFiles.getUserRecommendedGames, request);
 
     return {
       values: result,

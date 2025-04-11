@@ -20,7 +20,6 @@ export class RecommendedApiImpl implements RecommendedApi {
       pageSize?: number;
     }
   ): Promise<RecommendedResponseList> {
-    console.log(request);
-    return Promise.resolve(undefined);
+    return this.recommendedService.getUserRecommendedGames(request);
   }
 }
