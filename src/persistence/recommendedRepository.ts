@@ -24,7 +24,8 @@ export class RecommendedRepository implements IRecommendedRepository {
     request: { playerId: string; pageSize?: number },
     tx: IBaseProtocol<unknown> = database
   ): Promise<RecommendedResponseList> => {
-    const result = await tx.manyOrNone<RecommendedResponse>(sqlFiles.getUserRecommendedGames, request);
+    const { playerId, pageSize } = request;
+    const result = await tx.manyOrNone<RecommendedResponse>(sqlFiles.getUserRecommendedGames, { playerId, pageSize });
 
     return {
       values: result,
