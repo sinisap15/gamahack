@@ -1,1 +1,1 @@
-# gamahack
+# Veto Gateway Service

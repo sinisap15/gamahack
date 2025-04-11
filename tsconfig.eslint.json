@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig",
+  "include": [
+    "setup",
+    "src",
+    "test"
+  ],
+  "exclude": [
+    "build",
+    "coverage",
+    "crt",
+    "docs",
+    "node_modules",
+  ]
+}
