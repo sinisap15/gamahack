@@ -1,7 +1,6 @@
 import { type RecommendedResponse, RecommendedResponseList } from "../api/rest/v1/gen";
 import { IBaseProtocol } from "pg-promise";
-import { database } from "../database/database";
-import { sqlFiles } from "./index";
+import { database, sqlFiles } from "./index";
 
 export interface IRecommendedRepository {
   getRecommendedGames(pageSize: number): Promise<RecommendedResponseList>;

@@ -1,7 +1,6 @@
 import { FeedbackCreate } from "../api/rest/v1/gen";
 import { IBaseProtocol } from "pg-promise";
-import { database } from "../database/database";
-import { sqlFiles } from "./index";
+import { database, sqlFiles } from "./index";
 
 export interface IFeedbackRepository {
   createFeedback(request: { feedbackCreate: FeedbackCreate }): Promise<void>;
